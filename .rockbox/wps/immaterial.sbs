@@ -1,0 +1,82 @@
+# THEME           immaterial
+                
+# DESCRIPTION     The immaterial theme aims to be simple and elegant, taking
+#                 cues from the Material Design style platform.
+#                 It aims to support as many targets as possible by using
+#                 very few hardcoded values.
+#                 While the theme does not set a specific font it does
+#                 rely on the current user font being any one of a few
+#                 in a supported range - 18, 24, 32, 48, 64, and 96.
+
+# AUTHOR          Hayden Pearce
+# CONTACT EMAIL   saint.lascivious@gmail.com
+# FREENODE IRC    [Saint]
+
+
+# DISABLE BUILT-IN STATUSBAR
+# Notes: Disable display of the built-in status bar so that we may
+# draw our own.
+%wd
+
+
+# PRELOAD ASSETS
+# Notes: Bitmap image assets will be preloaded here.
+
+
+# CONDITIONAL VIEWPORT LOGIC
+# Notes: Sub-string is off by one, just roll with it.
+%?if(%ss(0,2,%St(font),number),=,19)<%Vd(xxs)%VI(xxs)>
+%?if(%ss(0,2,%St(font),number),=,25)<%Vd(xs)%VI(xs)>
+%?if(%ss(0,2,%St(font),number),=,33)<%Vd(s)%VI(s)>
+%?if(%ss(0,2,%St(font),number),=,49)<%Vd(m)%VI(m)>
+%?if(%ss(0,2,%St(font),number),=,65)<%Vd(l)%VI(l)>
+%?if(%ss(0,2,%St(font),number),=,97)<%Vd(xl)%VI(xl)>
+
+
+# STATUS BAR
+# Notes: Welcome to murdertown.
+# Any combination of values displayed in the status bar may be either
+# unavailable or unknown. Use the availablity of each value to govern
+# the position of those before or after it.
+# The logic is safe for both left-to-right and -right-to-left locales.
+%Vl(xxs,0,0,-,20,-)%Vb(FFC000)%Vf(000000)
+%aL %Lt %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cI>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cI:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%dr(0,18,-,2,B4C3D3)
+%T(0,0,-,-,cancel)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(xs,0,0,-,26,-)%Vb(FFC000)%Vf(000000)
+%aL %Lt %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cI>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cI:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%dr(0,24,-,2,B4C3D3)
+%T(0,0,-,-,cancel)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(s,0,0,-,34,-)%Vb(FFC000)%Vf(000000)
+%aL %Lt %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cI>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cI:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%dr(0,32,-,2,B4C3D3)
+%T(0,0,-,-,cancel)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(m,0,0,-,50,-)%Vb(FFC000)%Vf(000000)
+%aL %Lt %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cI>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cI:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%dr(0,48,-,2,B4C3D3)
+%T(0,0,-,-,cancel)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(l,0,0,-,66,-)%Vb(FFC000)%Vf(000000)
+%aL %Lt %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cI>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cI:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%dr(0,64,-,2,B4C3D3)
+%T(0,0,-,-,cancel)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(xl,0,0,-,98,-)%Vb(FFC000)%Vf(000000)
+%aL %Lt %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cI>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cI:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%dr(0,96,-,2,B4C3D3)
+%T(0,0,-,-,cancel)
+%T(0,0,-,-,quickscreen,long_press)
+
+
+# INFO VIEWPORT
+# Notes: The offset for the UI Viewport is simply the font height plus two
+# to account for the status bar font and divider.
+%Vi(xxs,0,20,-,-,-)%Vb(FFFFFF)%Vf(000000)
+%Vi(xs,0,26,-,-,-)%Vb(FFFFFF)%Vf(000000)
+%Vi(s,0,34,-,-,-)%Vb(FFFFFF)%Vf(000000)
+%Vi(m,0,50,-,-,-)%Vb(FFFFFF)%Vf(000000)
+%Vi(l,0,66,-,-,-)%Vb(FFFFFF)%Vf(000000)
+%Vi(xl,0,98,-,-,-)%Vb(FFFFFF)%Vf(000000)

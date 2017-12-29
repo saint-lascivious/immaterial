@@ -1,0 +1,447 @@
+# THEME           immaterial
+                
+# DESCRIPTION     The immaterial theme aims to be simple and elegant, taking
+#                 cues from the Material Design style platform.
+#                 It aims to support as many targets as possible by using
+#                 very few hardcoded values.
+#                 While the theme does not set a specific font it does
+#                 rely on the current user font being any one of a few
+#                 in a supported range - 18, 24, 32, 48, 64, and 96.
+
+# AUTHOR          Hayden Pearce
+# CONTACT EMAIL   saint.lascivious@gmail.com
+# FREENODE IRC    [Saint]
+
+
+# DISABLE BUILT-IN STATUSBAR
+# Notes: Disable display of the built-in status bar so that we may
+# draw our own.
+%wd
+
+
+# PRELOAD ASSETS
+# Notes: Bitmap image assets will be preloaded here.
+# This is the most expensive part of the theme by far. We have to
+# load every asset that we might ever possibly load right now because
+# we can not do this dynamically.
+
+# The current weight of all assets is "only" ~0.9MiB at this time.
+
+# There are 14 assets in our bitmap strip.
+%xl(xxs,18x18-immaterial_assets.bmp,14)
+%xl(xs,24x24-immaterial_assets.bmp,14)
+%xl(s,32x32-immaterial_assets.bmp,14)
+%xl(m,48x48-immaterial_assets.bmp,14)
+%xl(l,64x64-immaterial_assets.bmp,14)
+%xl(xl,96x96-immaterial_assets.bmp,14)
+
+
+# BACKDROP FRAMEBUFFER
+# Notes: This full-screen viewport allows us to draw directly to the
+# backdrop framebuffer. Any viewports appended with %VB will be drawn
+# in the backdrop framebuffer.
+
+# Defining the backdrop framebuffer should be the very first thing
+# happens as draw order is partially defined by parse order.
+%V(0,0,-,-,-)%VB
+
+
+# CONDITIONAL VIEWPORT LOGIC
+# Notes: Sub-string comparator logic is off by one internally, just
+# roll with it.
+%?if(%ss(0,2,%St(font),number),=,19)<%Vd(xxs)>
+%?if(%ss(0,2,%St(font),number),=,25)<%Vd(xs)>
+%?if(%ss(0,2,%St(font),number),=,33)<%Vd(s)>
+%?if(%ss(0,2,%St(font),number),=,49)<%Vd(m)>
+%?if(%ss(0,2,%St(font),number),=,65)<%Vd(l)>
+%?if(%ss(0,2,%St(font),number),=,97)<%Vd(xl)>
+
+
+# STATUS BAR
+# Notes: Welcome to murdertown.
+# Any combination of values displayed in the status bar may be either
+# unavailable or unknown. Use the availablity of each value to govern
+# the position of those before or after it.
+# The logic is safe for both left-to-right and -right-to-left locales.
+
+# We can't reliably draw dynamic text in the backdrop so we will need
+# to stack the status bar viewports.
+
+# The offset for these viewports is simply the font height
+# plus two to account for the status bar font and divider.
+
+# The status bar artificially defines our minally supported resolution
+# width but it is difficult to tell at which point the list title is going
+# start shunting the other values out of bounds.
+# This behaviour is curious and non-obvious, one would expect the values to
+# overlap the alignment is left and right justified but it would appear that
+# the left or right justified value "wins" depending on the current locale
+# being left to right or right to left.
+
+# Handle drawing our status bar "backdrop" here.
+%Vl(xxs,0,0,-,20,-)%VB
+%dr(0,0,-,-,FFC000)
+%dr(0,18,-,-,B4C3D3)
+%Vl(xs,0,0,-,26,-)%VB
+%dr(0,0,-,-,FFC000)
+%dr(0,24,-,-,B4C3D3)
+%Vl(s,0,0,-,34,-)%VB
+%dr(0,0,-,-,FFC000)
+%dr(0,32,-,-,B4C3D3)
+%Vl(m,0,0,-,50,-)%VB
+%dr(0,0,-,-,FFC000)
+%dr(0,48,-,-,B4C3D3)
+%Vl(l,0,0,-,66,-)%VB
+%dr(0,0,-,-,FFC000)
+%dr(0,64,-,-,B4C3D3)
+%Vl(xl,0,0,-,98,-)%VB
+%dr(0,0,-,-,FFC000)
+%dr(0,96,-,-,B4C3D3)
+
+
+# Handle status bar text and touchscreen areas here.
+# Notes: Touch areas don't work when they're in a viewport drawn into
+# the backdrop buffer, for...reasons...I guess, so we just overlap the
+# viewport.
+
+# %Lt List Title doesn't work here, so we'll display 'Rockbox' in the
+# status bar to keep it in line with the base skin.
+# The user knows they're in the while playing screen, we don't have to
+# explicitly tell them. Keep it neat.
+
+# Touchscreen areas for this viewport are 'menu' for short and 'quickscreen'
+# for long presses respectively.
+%Vl(xxs,0,0,-,20,-)
+%aL Rockbox %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cl>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cl:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%T(0,0,-,-,menu)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(xs,0,0,-,26,-)
+%aL Rockbox %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cl>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cl:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%T(0,0,-,-,menu)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(s,0,0,-,34,-)
+%aL Rockbox %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cl>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cl:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%T(0,0,-,-,menu)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(m,0,0,-,50,-)
+%aL Rockbox %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cl>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cl:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%T(0,0,-,-,menu)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(l,0,0,-,66,-)
+%aL Rockbox %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cl>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cl:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%T(0,0,-,-,menu)
+%T(0,0,-,-,quickscreen,long_press)
+%Vl(xl,0,0,-,98,-)
+%aL Rockbox %aR%?Sr<%?cc<%?cf< %cH:%cM| %cP%cM:%cl>%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>|%?bl<%?pv<| dB%pv| dB%pv| dB%pv>| %%%bl%?pv<| dB%pv| dB%pv| dB%pv>>>|%?cc<%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >%?cf<%cH:%cM |%cl:%cM%cP >|%?bl<%?pv<|%pvdB |%pvdB |%pvdB >|%?pv<|%pvdB |%pvdB |%pvdB >%bl%% >>>
+%T(0,0,-,-,menu)
+%T(0,0,-,-,quickscreen,long_press)
+
+
+# METADATA VIEWPORT
+# Notes: The metadata display logic is 'self healing' like the status bar logic.
+# Through sane defaults and checks we avoid displaying whitespace between values.
+# Display logic is:
+# Track Title (fallback to File Name)
+# Album Title (fallback to Full Path)
+# Artist (fallbacks to Album Artist, Year, Genre, not displayed)
+# Year (fallbacks to Genre, not displayed)
+# Genre (fallback not displayed)
+
+# The vertical offset for this viewport is the current glyph height plus two to
+# accomodate the status bar.
+# The height is negative offeset glyph height times three to accomodate the
+# progress bar, track time details, and playback assets.
+
+# This means that the minimal possible supported resolution height is around 240px
+# assuming that visually overlapping viewports are undesireable.
+
+# The width is defined by offsetting the viewport off against the
+# left and right edges by the value of the glyph height because it
+# seemed like a nice round number. No other reason.
+
+# The sillybuggers with %?Sr is so that we can step the metada off the edge of the
+# screen by one space regardless of the text direction of the current locale.
+
+# To-do: We could fit a tonne more metadata here if we wanted to and just live
+# with the possibility that it may get cut off at any point. The obvious contender
+# for this is to display some variation of the above for the incoming track(s).
+%Vl(xxs,0,20,-,-54,-)%Vb(FFFFFF)%Vf(000000)
+%aL%?Sr<| >%?it<%it|%fn>%?Sr< >
+%aL%?Sr<| >%?id<%id|%fp>%?Sr< >
+%aL%?Sr<| >%?ia<%ia|%?iA<%iA|%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?ia<%?iy<%iy|%?ig<%ig>>|%?iA<%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?iy<%ig>%?Sr< >
+%Vl(xs,0,26,-,-72,-)%Vb(FFFFFF)%Vf(000000)
+%aL%?Sr<| >%?it<%it|%fn>%?Sr< >
+%aL%?Sr<| >%?id<%id|%fp>%?Sr< >
+%aL%?Sr<| >%?ia<%ia|%?iA<%iA|%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?ia<%?iy<%iy|%?ig<%ig>>|%?iA<%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?iy<%ig>%?Sr< >
+%Vl(s,0,34,-,-96,-)%Vb(FFFFFF)%Vf(000000)
+%aL%?Sr<| >%?it<%it|%fn>%?Sr< >
+%aL%?Sr<| >%?id<%id|%fp>%?Sr< >
+%aL%?Sr<| >%?ia<%ia|%?iA<%iA|%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?ia<%?iy<%iy|%?ig<%ig>>|%?iA<%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?iy<%ig>%?Sr< >
+%Vl(m,0,50,-,-144,-)%Vb(FFFFFF)%Vf(000000)
+%aL%?Sr<| >%?it<%it|%fn>%?Sr< >
+%aL%?Sr<| >%?id<%id|%fp>%?Sr< >
+%aL%?Sr<| >%?ia<%ia|%?iA<%iA|%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?ia<%?iy<%iy|%?ig<%ig>>|%?iA<%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?iy<%ig>%?Sr< >
+%Vl(l,0,66,-,-192,-)%Vb(FFFFFF)%Vf(000000)
+%aL%?Sr<| >%?it<%it|%fn>%?Sr< >
+%aL%?Sr<| >%?id<%id|%fp>%?Sr< >
+%aL%?Sr<| >%?ia<%ia|%?iA<%iA|%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?ia<%?iy<%iy|%?ig<%ig>>|%?iA<%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?iy<%ig>%?Sr< >
+%Vl(xl,0,98,-,-288,-)%Vb(FFFFFF)%Vf(000000)
+%aL%?Sr<| >%?it<%it|%fn>%?Sr< >
+%aL%?Sr<| >%?id<%id|%fp>%?Sr< >
+%aL%?Sr<| >%?ia<%ia|%?iA<%iA|%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?ia<%?iy<%iy|%?ig<%ig>>|%?iA<%?iy<%iy|%?ig<%ig>>>>%?Sr< >
+%aL%?Sr<| >%?iy<%ig>%?Sr< >
+
+
+# PROGRESS BAR
+# Notes: Nothing particularly complex is happening here.
+# We want the progress bar to be bound to the bottom of the screen
+# so we use a negative offset. The vertical position is defined by
+# its own height and the assets we want to draw below it, namely
+# the track time and and playlist position display and the playback
+# controls.
+
+# We'll use the current glyph height again to define the height of
+# this viewport so our negative vertical offset is equal to glyph
+# height times three.
+
+# The width is again defined by offsetting the viewport off against
+# the left and right edges by the value of the glyph height because it
+# seemed like a nice round number.
+# We want to keep it off the edges not only because it looks nicer
+# but to be friendlier to the touchscreen users.
+
+# Defining overlapping viewports is required to ensure that we always
+# draw *something* into the foreground to prevent visual artifacts.
+# This is a stupid little trick, but it is a stupid little trick that works,
+# and it's very inexpensive so lets roll with it. At least for now.
+
+# Why yes those are positive, negative, relative, and unbound values
+# in a single object declaration, thanks for asking.
+
+# To-do: Eventually we're going to want to draw two of these so that we can
+# reverse the fill direction to localize more consistently.
+%Vl(xxs,0,-54,-,18,-)
+%Vl(xxs,2.5%,-54,95%,18,-)%Vf(FFC000)
+%pb(0,0,-,-)
+%T(0,0,-,-,progressbar)
+%Vl(xs,0,-72,-,24,-)
+%Vl(xs,2.5%,-72,95%,24,-)%Vf(FFC000)
+%pb(0,0,-,-)
+%T(0,0,-,-,progressbar)
+%Vl(s,0,-96,-,32,-)
+%Vl(s,2.5%,-96,95%,32,-)%Vf(FFC000)
+%pb(0,0,-,-)
+%T(0,0,-,-,progressbar)
+%Vl(m,0,-144,-,48,-)
+%Vl(m,2.5%,-144,95%,48,-)%Vf(FFC000)
+%pb(0,0,-,-)
+%T(0,0,-,-,progressbar)
+%Vl(l,0,-192,-,64,-)
+%Vl(l,2.5%,-192,95%,64,-)%Vf(FFC000)
+%pb(0,0,-,-)
+%T(0,0,-,-,progressbar)
+%Vl(xl,0,-288,-,96,-)
+%Vl(xl,2.5%,-288,95%,96,-)%Vf(FFC000)
+%pb(0,0,-,-)
+%T(0,0,-,-,progressbar)
+
+
+# TRACK TIME AND PLAYLIST INFORMATION
+# To-do: Change the alignment tags when we get around to supporting right
+# to left fill in the progress bar.
+%Vl(xxs,0,-36,-,18,-)%Vb(FFFFFF)%Vf(000000)
+%al %pc%ac%?Sr<%pe %Sx(of) %pp|%pp %Sx(of) %pe>%ar%pr 
+%Vl(xs,0,-48,-,24,-)%Vb(FFFFFF)%Vf(000000)
+%al %pc%ac%?Sr<%pe %Sx(of) %pp|%pp %Sx(of) %pe>%ar%pr 
+%Vl(s,0,-64,-,32,-)%Vb(FFFFFF)%Vf(000000)
+%al %pc%ac%?Sr<%pe %Sx(of) %pp|%pp %Sx(of) %pe>%ar%pr 
+%Vl(m,0,-96,-,48,-)%Vb(FFFFFF)%Vf(000000)
+%al %pc%ac%?Sr<%pe %Sx(of) %pp|%pp %Sx(of) %pe>%ar%pr 
+%Vl(l,0,-128,-,64,-)%Vb(FFFFFF)%Vf(000000)
+%al %pc%ac%?Sr<%pe %Sx(of) %pp|%pp %Sx(of) %pe>%ar%pr 
+%Vl(xl,0,-192,-,96,-)%Vb(FFFFFF)%Vf(000000)
+%al %pc%ac%?Sr<%pe %Sx(of) %pp|%pp %Sx(of) %pe>%ar%pr 
+
+
+# CONTROL PANEL
+# Notes: I'm sorry. I'm so, so, sorry.
+# There's nothing I can say or do to make the following abomination right.
+%Vl(xxs,0,-18,-,18,-)%Vb(FFFFFF)%Vf(000000)
+%Vl(xxs,0,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%?mm<%xd(xxs,9)|%xd(xxs,7)|%xd(xxs,8)|%xd(xxs,7)|AB>
+%T(0,0,18,18,repmode)
+%T(0,0,18,18,setting_set,repeat,off,long_press)
+%Vl(xxs,14.2%,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xxs,13)
+%T(0,0,18,18,wps_prev)
+%Vl(xxs,28.5%,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xxs,5)
+%T(0,0,18,18,rwd,repeat_press)
+%Vl(xxs,42.8%,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%?if(%mp,=,1)<%xd(xxs,1)|%?if(%mp,=,3)<%xd(xxs,3)|%xd(xxs,2)>>
+%T(0,0,18,18,play)
+%T(0,0,18,18,stop,long_press)
+%Vl(xxs,57.1%,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xxs,4)
+%T(0,0,18,18,ffwd,repeat_press)
+%Vl(xxs,71.4%,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xxs,12)
+%T(0,0,18,18,wps_next)
+%Vl(xxs,85.7%,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%?ps<%xd(xxs,10)|%?if(%mm,=,4)<%xd(xxs,10)|%xd(xxs,11)>>
+%T(0,0,18,18,shuffle)
+%T(0,0,18,18,setting_set,shuffle,off,long_press)
+%Vl(xxs,-18,-18,18,18,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xxs,14)
+%T(0,0,18,18,contextmenu)
+%Vl(xs,0,-24,-,24,-)%Vb(FFFFFF)%Vf(000000)
+%Vl(xs,0,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%?mm<%xd(xs,9)|%xd(xs,7)|%xd(xs,8)|%xd(xs,7)|AB>
+%T(0,0,24,24,repmode)
+%T(0,0,24,24,setting_set,repeat,off,long_press)
+%Vl(xs,14.2%,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xs,13)
+%T(0,0,24,24,wps_prev)
+%Vl(xs,28.5%,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xs,5)
+%T(0,0,24,24,rwd,repeat_press)
+%Vl(xs,42.8%,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%?if(%mp,=,1)<%xd(xs,1)|%?if(%mp,=,3)<%xd(xs,3)|%xd(xs,2)>>
+%T(0,0,24,24,play)
+%T(0,0,24,24,stop,long_press)
+%Vl(xs,57.1%,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xs,4)
+%T(0,0,24,24,ffwd,repeat_press)
+%Vl(xs,71.4%,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xs,12)
+%T(0,0,24,24,wps_next)
+%Vl(xs,85.7%,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%?ps<%xd(xs,10)|%?if(%mm,=,4)<%xd(xs,10)|%xd(xs,11)>>
+%T(0,0,24,24,shuffle)
+%T(0,0,24,24,setting_set,shuffle,off,long_press)
+%Vl(xs,-24,-24,24,24,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xs,14)
+%T(0,0,24,24,contextmenu)
+%Vl(s,0,-32,-,32,-)%Vb(FFFFFF)%Vf(000000)
+%Vl(s,0,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%?mm<%xd(s,9)|%xd(s,7)|%xd(s,8)|%xd(s,7)|AB>
+%T(0,0,32,32,repmode)
+%T(0,0,32,32,setting_set,repeat,off,long_press)
+%Vl(s,14.2%,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%xd(s,13)
+%T(0,0,32,32,wps_prev)
+%Vl(s,28.5%,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%xd(s,5)
+%T(0,0,32,32,rwd,repeat_press)
+%Vl(s,42.8%,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%?if(%mp,=,1)<%xd(s,1)|%?if(%mp,=,3)<%xd(s,3)|%xd(s,2)>>
+%T(0,0,32,32,play)
+%T(0,0,32,32,stop,long_press)
+%Vl(s,57.1%,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%xd(s,4)
+%T(0,0,32,32,ffwd,repeat_press)
+%Vl(s,71.4%,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%xd(s,12)
+%T(0,0,32,32,wps_next)
+%Vl(s,85.7%,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%?ps<%xd(s,10)|%?if(%mm,=,4)<%xd(s,10)|%xd(s,11)>>
+%T(0,0,32,32,shuffle)
+%T(0,0,32,32,setting_set,shuffle,off,long_press)
+%Vl(s,-32,-32,32,32,-)%Vb(FFFFFF)%Vf(000000)
+%xd(s,14)
+%T(0,0,32,32,contextmenu)
+%Vl(m,0,-48,-,48,-)%Vb(FFFFFF)%Vf(000000)
+%Vl(m,0,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%?mm<%xd(m,9)|%xd(m,7)|%xd(m,8)|%xd(m,7)|AB>
+%T(0,0,48,48,repmode)
+%T(0,0,48,48,setting_set,repeat,off,long_press)
+%Vl(m,14.2%,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%xd(m,13)
+%T(0,0,48,48,wps_prev)
+%Vl(m,28.5%,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%xd(m,5)
+%T(0,0,48,48,rwd,repeat_press)
+%Vl(m,42.8%,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%?if(%mp,=,1)<%xd(m,1)|%?if(%mp,=,3)<%xd(m,3)|%xd(m,2)>>
+%T(0,0,48,48,play)
+%T(0,0,48,48,stop,long_press)
+%Vl(m,57.1%,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%xd(m,4)
+%T(0,0,48,48,ffwd,repeat_press)
+%Vl(m,71.4%,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%xd(m,12)
+%T(0,0,48,48,wps_next)
+%Vl(m,85.7%,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%?ps<%xd(m,10)|%?if(%mm,=,4)<%xd(m,10)|%xd(m,11)>>
+%T(0,0,48,48,shuffle)
+%T(0,0,48,48,setting_set,shuffle,off,long_press)
+%Vl(m,-48,-48,48,48,-)%Vb(FFFFFF)%Vf(000000)
+%xd(m,14)
+%T(0,0,48,48,contextmenu)
+%Vl(l,0,-64,-,64,-)%Vb(FFFFFF)%Vf(000000)
+%Vl(l,0,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%?mm<%xd(l,9)|%xd(l,7)|%xd(l,8)|%xd(l,7)|AB>
+%T(0,0,64,64,repmode)
+%T(0,0,64,64,setting_set,repeat,off,long_press)
+%Vl(l,14.2%,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%xd(l,13)
+%T(0,0,64,64,wps_prev)
+%Vl(l,28.5%,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%xd(l,5)
+%T(0,0,64,64,rwd,repeat_press)
+%Vl(l,42.8%,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%?if(%mp,=,1)<%xd(l,1)|%?if(%mp,=,3)<%xd(l,3)|%xd(l,2)>>
+%T(0,0,64,64,play)
+%T(0,0,64,64,stop,long_press)
+%Vl(l,57.1%,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%xd(l,4)
+%T(0,0,64,64,ffwd,repeat_press)
+%Vl(l,71.4%,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%xd(l,12)
+%T(0,0,64,64,wps_next)
+%Vl(l,85.7%,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%?ps<%xd(l,10)|%?if(%mm,=,4)<%xd(l,10)|%xd(l,11)>>
+%T(0,0,64,64,shuffle)
+%T(0,0,64,64,setting_set,shuffle,off,long_press)
+%Vl(l,-64,-64,64,64,-)%Vb(FFFFFF)%Vf(000000)
+%xd(l,14)
+%T(0,0,64,64,contextmenu)
+%Vl(xl,0,-96,-,96,-)%Vb(FFFFFF)%Vf(000000)
+%Vl(xl,0,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%?mm<%xd(xl,9)|%xd(xl,7)|%xd(xl,8)|%xd(xl,7)|AB>
+%T(0,0,96,96,repmode)
+%T(0,0,96,96,setting_set,repeat,off,long_press)
+%Vl(xl,14.2%,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xl,13)
+%T(0,0,96,96,wps_prev)
+%Vl(xl,28.5%,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xl,5)
+%T(0,0,96,96,rwd,repeat_press)
+%Vl(xl,42.8%,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%?if(%mp,=,1)<%xd(xl,1)|%?if(%mp,=,3)<%xd(xl,3)|%xd(xl,2)>>
+%T(0,0,96,96,play)
+%T(0,0,96,96,stop,long_press)
+%Vl(xl,57.1%,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xl,4)
+%T(0,0,96,96,ffwd,repeat_press)
+%Vl(xl,71.4%,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xl,12)
+%T(0,0,96,96,wps_next)
+%Vl(xl,85.7%,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%?ps<%xd(xl,10)|%?if(%mm,=,4)<%xd(xl,10)|%xd(xl,11)>>
+%T(0,0,96,96,shuffle)
+%T(0,0,96,96,setting_set,shuffle,off,long_press)
+%Vl(xl,-96,-96,96,96,-)%Vb(FFFFFF)%Vf(000000)
+%xd(xl,14)
+%T(0,0,96,96,contextmenu)
